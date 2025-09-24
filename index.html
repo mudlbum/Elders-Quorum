@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-translate="pageTitle">RH Elders Quorum Survey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background-color: #f3f4f6; /* Lighter gray background */
+        }
+        h1, h2, h3 {
+            font-family: 'Merriweather', serif;
+        }
+        .form-container {
+            animation: fadeIn 1s ease-in-out;
+        }
+        .message-box {
+            animation: slideIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .time-slot {
+            transition: all 0.2s ease-in-out;
+            padding: 0.5rem 0.25rem;
+            font-size: 0.75rem;
+        }
+        .time-slot.selected {
+            background-color: #005A94; /* Deeper blue */
+            color: white;
+            border-color: #004D7F;
+            transform: scale(1.05);
+        }
+        .lang-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .lang-btn.active {
+            background-color: #005A94;
+            color: white;
+        }
+        input[type="text"], input[type="tel"], textarea {
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus, input[type="tel"]:focus, textarea:focus {
+            border-color: #0078C1;
+            box-shadow: 0 0 0 3px rgba(0, 120, 193, 0.2);
+        }
+        .submit-btn {
+            background-image: linear-gradient(to right, #0078C1, #005A94);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 90, 148, 0.3);
+        }
+        /* Styles for RTL (Persian) */
+        [dir="rtl"] { text-align: right; }
+        [dir="rtl"] label { display: inline-block; }
+        [dir="rtl"] .flex { flex-direction: row-reverse; }
+        [dir="rtl"] .md\:grid-cols-2 > div:first-child { padding-left: 0.75rem; padding-right: 0; }
+        [dir="rtl"] .md\:grid-cols-2 > div:last-child { padding-right: 0.75rem; padding-left: 0; }
+        [dir="rtl"] input, [dir="rtl"] textarea { text-align: right; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Language Selector -->
+    <div class="bg-white shadow-sm">
+        <div class="container mx-auto max-w-5xl p-2 flex justify-end items-center">
+            <div class="flex space-x-1 border border-gray-200 rounded-lg p-1">
+                 <button onclick="changeLanguage('en')" id="lang-en" class="lang-btn active px-3 py-1 text-sm font-medium rounded-md">English</button>
+                 <button onclick="changeLanguage('es')" id="lang-es" class="lang-btn px-3 py-1 text-sm font-medium rounded-md">Español</button>
+                 <button onclick="changeLanguage('fa')" id="lang-fa" class="lang-btn px-3 py-1 text-sm font-medium rounded-md">فارسی</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Header -->
+    <header class="relative bg-gray-800 text-white py-20">
+        <div class="absolute inset-0">
+        </div>
+        <div class="relative container mx-auto text-center z-10 form-container">
+            <h1 class="text-4xl md:text-5xl font-bold" data-translate="formTitle">RH Elders Quorum Survey</h1>
+            <p class="text-lg mt-4 max-w-2xl mx-auto" data-translate="formSubtitle">Help us understand your preferences and skills to better serve our community.</p>
+        </div>
+    </header>
+
+
+    <div class="container mx-auto max-w-3xl p-4 sm:p-6 lg:p-8 -mt-16 relative z-20">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 form-container">
+            
+            <div id="message" class="hidden mb-6 p-4 rounded-lg text-center"></div>
+
+            <form id="user-form">
+                <!-- Personal Information -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="firstName" class="block text-sm font-semibold text-gray-700 mb-1" data-translate="firstNameLabel">First Name</label>
+                        <input type="text" id="firstName" name="firstName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-0 focus:outline-none" data-translate-placeholder="firstNamePlaceholder">
+                    </div>
+                    <div>
+                        <label for="lastName" class="block text-sm font-semibold text-gray-700 mb-1" data-translate="lastNameLabel">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-0 focus:outline-none" data-translate-placeholder="lastNamePlaceholder">
+                    </div>
+                    <div>
+                        <label for="occupation" class="block text-sm font-semibold text-gray-700 mb-1" data-translate="occupationLabel">Occupation</label>
+                         <input type="text" id="occupation" name="occupation" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-0 focus:outline-none" data-translate-placeholder="occupationPlaceholder">
+                         <p class="text-xs text-gray-500 mt-1" data-translate="occupationHelp">Used for professional referrals and work opportunities.</p>
+                    </div>
+                    <div>
+                        <label for="phone" class="block text-sm font-semibold text-gray-700 mb-1" data-translate="phoneLabel">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-0 focus:outline-none" data-translate-placeholder="phonePlaceholder">
+                         <p class="text-xs text-gray-500 mt-1" data-translate="phoneHelp">For communication about service opportunities.</p>
+                    </div>
+                </div>
+
+                <!-- Ministering Preference -->
+                <div class="mb-6 p-6 bg-gray-50 rounded-lg border border-gray-200">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2" data-translate="ministeringTitle">Ministering Preference</h3>
+                    <p class="text-sm text-gray-600 mb-4" data-translate="ministeringSubtitle">If you have preferred individuals you feel comfortable contacting and helping, please list their names below. If not, please check the 'No Preference' box. Please note that assignments are not guaranteed based on these preferences.</p>
+                    <div class="flex items-center mb-4">
+                        <input type="checkbox" id="noPreference" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                        <label for="noPreference" class="mx-2 block text-sm text-gray-900" data-translate="noPreferenceLabel">No Preference</label>
+                    </div>
+                    <div id="ministering-names" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <input type="text" name="ministeringName1" data-translate-placeholder="name1Placeholder" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-0 focus:outline-none">
+                        <input type="text" name="ministeringName2" data-translate-placeholder="name2Placeholder" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-0 focus:outline-none">
+                        <input type="text" name="ministeringName3" data-translate-placeholder="name3Placeholder" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-0 focus:outline-none">
+                        <input type="text" name="ministeringName4" data-translate-placeholder="name4Placeholder" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-0 focus:outline-none">
+                        <input type="text" name="ministeringName5" data-translate-placeholder="name5Placeholder" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-0 focus:outline-none">
+                    </div>
+                </div>
+                
+                <!-- Hobbies & Talents -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="hobbies" class="block text-sm font-semibold text-gray-700 mb-1" data-translate="hobbiesLabel">Hobbies or Things You Like</label>
+                        <textarea id="hobbies" name="hobbies" rows="4" data-translate-placeholder="hobbiesPlaceholder" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-0 focus:outline-none"></textarea>
+                        <p class="text-xs text-gray-500 mt-1" data-translate="hobbiesHelp">Helps in finding common interests for activities.</p>
+                    </div>
+                     <div>
+                        <label for="talents" class="block text-sm font-semibold text-gray-700 mb-1" data-translate="talentsLabel">Talents for Service</label>
+                        <textarea id="talents" name="talents" rows="4" data-translate-placeholder="talentsPlaceholder" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-0 focus:outline-none"></textarea>
+                         <p class="text-xs text-gray-500 mt-1" data-translate="talentsHelp">Skills you can offer to help others in the community.</p>
+                    </div>
+                </div>
+
+                <!-- Service Time Preference -->
+                <div class="mb-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2" data-translate="timeTitle">Service Time Preference</h3>
+                    <p class="text-sm text-gray-600 mb-4" data-translate="timeSubtitle">Click all available 1-hour time slots when you are able to help. There is no limit to how many you can select.</p>
+                    <div id="time-preference-grid" class="grid grid-cols-8 gap-1 text-center">
+                        <!-- JS will populate this -->
+                    </div>
+                    <input type="hidden" id="serviceTimePreference" name="serviceTimePreference">
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" id="submit-button" class="submit-btn w-full md:w-auto text-white font-bold py-3 px-12 rounded-lg" data-translate="submitButton">
+                        Submit Information
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwV30oskCN4dmTwKqv3-MxE-dactIEBhZPZQXn70SVVAERwx0kKpl8XtyQTParZN59_/exec';
+
+        const form = document.getElementById('user-form');
+        const messageDiv = document.getElementById('message');
+        const submitButton = document.getElementById('submit-button');
+
+        // --- Language Translation Data ---
+        const translations = {
+            en: {
+                pageTitle: "RH Elders Quorum Survey",
+                formTitle: "RH Elders Quorum Survey",
+                formSubtitle: "Help us understand your preferences and skills to better serve our community.",
+                firstNameLabel: "First Name",
+                firstNamePlaceholder: "Enter your first name",
+                lastNameLabel: "Last Name",
+                lastNamePlaceholder: "Enter your last name",
+                occupationLabel: "Occupation",
+                occupationPlaceholder: "e.g., Engineer, Teacher",
+                occupationHelp: "Used for professional referrals and work opportunities.",
+                phoneLabel: "Phone Number",
+                phonePlaceholder: "Enter your phone number",
+                phoneHelp: "For communication about service opportunities.",
+                ministeringTitle: "Ministering Preference",
+                ministeringSubtitle: "If you have preferred individuals you feel comfortable contacting and helping, please list their names below. If not, please check the 'No Preference' box. Please note that assignments are not guaranteed based on these preferences.",
+                noPreferenceLabel: "No Preference",
+                name1Placeholder: "Name 1",
+                name2Placeholder: "Name 2",
+                name3Placeholder: "Name 3",
+                name4Placeholder: "Name 4",
+                name5Placeholder: "Name 5",
+                hobbiesLabel: "Hobbies or Things You Like",
+                hobbiesPlaceholder: "e.g., basketball, BBQ, movies...",
+                hobbiesHelp: "Helps in finding common interests for activities.",
+                talentsLabel: "Talents for Service",
+                talentsPlaceholder: "e.g., hair cutting, plumbing, handy fixes...",
+                talentsHelp: "Skills you can offer to help others in the community.",
+                timeTitle: "Service Time Preference",
+                timeSubtitle: "Click all available 1-hour time slots when you are able to help. There is no limit to how many you can select.",
+                submitButton: "Submit Information",
+                successMessage: "Your information has been submitted successfully!",
+                errorMessage: "An error occurred. Please try again.",
+                submittingMessage: "Submitting...",
+                days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            },
+            es: {
+                pageTitle: "Encuesta del Quórum de Élderes de RH",
+                formTitle: "Encuesta del Quórum de Élderes de RH",
+                formSubtitle: "Ayúdenos a comprender sus preferences y habilidades para servir mejor a nuestra comunidad.",
+                firstNameLabel: "Nombre",
+                firstNamePlaceholder: "Ingrese su nombre",
+                lastNameLabel: "Apellido",
+                lastNamePlaceholder: "Ingrese su apellido",
+                occupationLabel: "Ocupación",
+                occupationPlaceholder: "p.ej., Ingeniero, Maestro",
+                occupationHelp: "Se utiliza para referencias profesionales y oportunidades laborales.",
+                phoneLabel: "Número de Teléfono",
+                phonePlaceholder: "Ingrese su número de teléfono",
+                phoneHelp: "Para comunicación sobre oportunidades de servicio.",
+                ministeringTitle: "Preferencia de Ministración",
+                ministeringSubtitle: "Si tiene personas preferidas con las que se siente cómodo contactando y ayudando, por favor enumere sus nombres a continuación. Si no, marque la casilla 'Sin Preferencia'. Tenga en cuenta que las asignaciones no están garantizadas en función de estas preferencias.",
+                noPreferenceLabel: "Sin Preferencia",
+                name1Placeholder: "Nombre 1",
+                name2Placeholder: "Nombre 2",
+                name3Placeholder: "Nombre 3",
+                name4Placeholder: "Nombre 4",
+                name5Placeholder: "Nombre 5",
+                hobbiesLabel: "Pasatiempos o Cosas que le Gustan",
+                hobbiesPlaceholder: "p.ej., baloncesto, barbacoa, películas...",
+                hobbiesHelp: "Ayuda a encontrar intereses comunes para actividades.",
+                talentsLabel: "Talentos para el Servicio",
+                talentsPlaceholder: "p.ej., corte de pelo, plomería, arreglos...",
+                talentsHelp: "Habilidades que puede ofrecer para ayudar a otros en la comunidad.",
+                timeTitle: "Preferencia de Horario de Servicio",
+                timeSubtitle: "Haga clic en todas las franjas horarias de 1 hora disponibles en las que pueda ayudar. No hay límite en la cantidad que puede seleccionar.",
+                submitButton: "Enviar Información",
+                successMessage: "¡Su información ha sido enviada con éxito!",
+                errorMessage: "Ocurrió un error. Por favor, inténtelo de nuevo.",
+                submittingMessage: "Enviando...",
+                days: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+            },
+            fa: {
+                pageTitle: "نظرسنجی کورم ارشدان آر اچ",
+                formTitle: "نظرسنجی کورم ارشدان آر اچ",
+                formSubtitle: "به ما کمک کنید تا ترجیحات و مهارت های شما را برای خدمت بهتر به جامعه خود درک کنیم.",
+                firstNameLabel: "نام",
+                firstNamePlaceholder: "نام خود را وارد کنید",
+                lastNameLabel: "نام خانوادگی",
+                lastNamePlaceholder: "نام خانوادگی خود را وارد کنید",
+                occupationLabel: "شغل",
+                occupationPlaceholder: "مثال: مهندس، معلم",
+                occupationHelp: "برای ارجاعات حرفه ای و فرصت های شغلی استفاده می شود.",
+                phoneLabel: "شماره تلفن",
+                phonePlaceholder: "شماره تلفن خود را وارد کنید",
+                phoneHelp: "برای ارتباط در مورد فرصت های خدماتی.",
+                ministeringTitle: "اولویت خدمت رسانی",
+                ministeringSubtitle: "اگر افراد مورد نظری دارید که با تماس و کمک به آنها احساس راحتی می کنید، لطفاً نام آنها را در زیر فهرست کنید. در غیر این صورت، لطفاً کادر 'بدون اولویت' را علامت بزنید. لطفاً توجه داشته باشید که واگذاری ها بر اساس این اولویت ها تضمین نمی شود.",
+                noPreferenceLabel: "بدون اولویت",
+                name1Placeholder: "نام ۱",
+                name2Placeholder: "نام ۲",
+                name3Placeholder: "نام ۳",
+                name4Placeholder: "نام ۴",
+                name5Placeholder: "نام ۵",
+                hobbiesLabel: "سرگرمی ها یا چیزهایی که دوست دارید",
+                hobbiesPlaceholder: "مثال: بسکتبال، باربیکیو، فیلم...",
+                hobbiesHelp: "به یافتن علایق مشترک برای فعالیت ها کمک می کند.",
+                talentsLabel: "استعدادها برای خدمت",
+                talentsPlaceholder: "مثال: آرایشگری، لوله کشی، تعمیرات...",
+                talentsHelp: "مهارت هایی که می توانید برای کمک به دیگران در جامعه ارائه دهید.",
+                timeTitle: "اولویت زمان خدمت",
+                timeSubtitle: "روی تمام بازه های زمانی ۱ ساعته موجود که می توانید کمک کنید کلیک کنید. هیچ محدودیتی در تعداد انتخاب شما وجود ندارد.",
+                submitButton: "ارسال اطلاعات",
+                successMessage: "اطلاعات شما با موفقیت ارسال شد!",
+                errorMessage: "خطایی روی داد. لطفاً دوباره تلاش کنید.",
+                submittingMessage: "در حال ارسال...",
+                days: ['دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه', 'یکشنبه'],
+            }
+        };
+
+        // --- UI Logic ---
+        function changeLanguage(lang) {
+            const t = translations[lang];
+            
+            // Set page direction
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+
+            // Update text content
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.getAttribute('data-translate');
+                if (t[key]) el.textContent = t[key];
+            });
+
+            // Update placeholders
+            document.querySelectorAll('[data-translate-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-translate-placeholder');
+                if (t[key]) el.placeholder = t[key];
+            });
+            
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`lang-${lang}`).classList.add('active');
+
+            // Re-render time grid for new day names
+            renderTimeGrid(lang);
+        }
+
+        function renderTimeGrid(lang) {
+            const timeGrid = document.getElementById('time-preference-grid');
+            timeGrid.innerHTML = ''; // Clear existing grid
+            
+            const days = translations[lang].days;
+            const times = [
+                "8-9 AM", "9-10 AM", "10-11 AM", "11-12 PM",
+                "12-1 PM", "1-2 PM", "2-3 PM", "3-4 PM",
+                "4-5 PM", "5-6 PM", "6-7 PM", "7-8 PM", "8-9 PM", "9-10 PM"
+            ];
+            
+            // Create Headers
+            const cornerCell = document.createElement('div');
+            cornerCell.className = 'font-bold text-gray-600 text-xs';
+            timeGrid.appendChild(cornerCell);
+
+            days.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.textContent = day;
+                dayHeader.className = 'font-bold text-gray-600 text-xs py-2';
+                timeGrid.appendChild(dayHeader);
+            });
+            
+            // Create Grid Rows (Time labels + slots)
+            times.forEach(time => {
+                const timeLabel = document.createElement('div');
+                timeLabel.textContent = time;
+                timeLabel.className = 'font-semibold text-gray-700 flex items-center justify-center text-xs';
+                timeGrid.appendChild(timeLabel);
+
+                days.forEach(day => {
+                    const slot = document.createElement('div');
+                    slot.dataset.day = day;
+                    slot.dataset.time = time;
+                    slot.innerHTML = '&nbsp;'; 
+                    slot.className = 'time-slot cursor-pointer border-2 border-gray-200 rounded-lg hover:bg-blue-100 hover:border-blue-300';
+                    slot.addEventListener('click', () => slot.classList.toggle('selected'));
+                    timeGrid.appendChild(slot);
+                });
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+             changeLanguage('en'); // Default language
+        });
+
+        // Ministering Preference Logic
+        const noPreferenceCheckbox = document.getElementById('noPreference');
+        const ministeringInputs = document.querySelectorAll('#ministering-names input');
+        noPreferenceCheckbox.addEventListener('change', () => {
+            ministeringInputs.forEach(input => {
+                input.disabled = noPreferenceCheckbox.checked;
+                input.value = noPreferenceCheckbox.checked ? '' : input.value;
+                input.classList.toggle('bg-gray-100', noPreferenceCheckbox.checked);
+            });
+        });
+
+        // Form Submission Logic
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+
+            const selectedSlots = Array.from(document.querySelectorAll('.time-slot.selected'))
+                                     .map(slot => `${slot.dataset.day} ${slot.dataset.time}`);
+            document.getElementById('serviceTimePreference').value = selectedSlots.join(', ');
+
+            submitButton.disabled = true;
+            submitButton.textContent = translations[document.documentElement.lang].submittingMessage;
+            messageDiv.classList.add('hidden');
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+                .then(response => response.ok ? response.json() : Promise.reject('Network response was not ok.'))
+                .then(data => {
+                    showMessage(translations[document.documentElement.lang].successMessage, 'success');
+                    form.reset();
+                    document.querySelectorAll('.time-slot.selected').forEach(slot => slot.classList.remove('selected'));
+                    ministeringInputs.forEach(input => {
+                        input.disabled = false;
+                        input.classList.remove('bg-gray-100');
+                    });
+                })
+                .catch(error => {
+                    console.error('Error!', error);
+                    showMessage(translations[document.documentElement.lang].errorMessage, 'error');
+                })
+                .finally(() => {
+                    submitButton.disabled = false;
+                    submitButton.textContent = translations[document.documentElement.lang].submitButton;
+                });
+        });
+
+        function showMessage(msg, type) {
+            messageDiv.textContent = msg;
+            messageDiv.className = `message-box p-4 rounded-lg text-center mb-6 ${type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`;
+        }
+    </script>
+</body>
+</html>
+
